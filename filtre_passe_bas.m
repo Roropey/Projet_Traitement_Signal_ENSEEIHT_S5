@@ -29,7 +29,7 @@ signal_recu=Signal_transmit();
 figure;
 plot(plage*Fe*Fe/ordre_filtre,(FourrierImp))
 hold on;
-module_signal=abs(fft(signal_recu));
+module_signal=abs(fftshift(fft(signal_recu)));
 plage_module=(-Fe/2:Fe/(length(module_signal)-1):Fe/2);
-semilogy(plage_module,module_signal)
+semilogy(plage_module,module_signal*100) %ptt supprimer le *100
 hold off;

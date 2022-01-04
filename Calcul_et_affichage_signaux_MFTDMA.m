@@ -36,14 +36,14 @@ ylabel('Signal');
 
 %Signaux sur slot après mise sur porteuse
 subplot(2,2,3);
-signal_porteuse_1=cos(2*pi*f1*(1:T*Fe*5))'.*signal_5_slots_1;
+signal_porteuse_1=cos(2*pi*f1*plage_signal_1)'.*signal_5_slots_1;
 plot(plage_signal_1,signal_porteuse_1)
 title('Signal sur 5 slots utilisateur 1 sur porteuse');
 xlabel('Temps (s)');
 ylabel('Signal');
 
 subplot(2,2,4);
-signal_porteuse_2=cos(2*pi*f2*(1:T*Fe*5))'.*signal_5_slots_2;
+signal_porteuse_2=cos(2*pi*f2*plage_signal_1)'.*signal_5_slots_2;
 plot(plage_signal_2,signal_porteuse_2)
 title('Signal sur 5 slots utilisateur 2 sur porteuse');
 xlabel('Temps (s)');
@@ -61,7 +61,7 @@ xlabel('Temps (s)');
 ylabel('Signal');
 
 %Signal après bruit
-signal_total_apres_bruit=awgn(signal_total_avant_bruit,bruit,'measured');
+signal_total_apres_bruit=awgn(signal_total_avant_bruit,bruit);
 subplot(2,1,2);
 plot(plage_signal_total,signal_total_apres_bruit)
 title('Addition du signal 1 et 2 apres bruit');
