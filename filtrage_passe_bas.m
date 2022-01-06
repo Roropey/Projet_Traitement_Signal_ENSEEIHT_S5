@@ -9,7 +9,7 @@ if Affichage
     plot(plage,Impulsion)
     title('Impulsion temporelle bas')
     xlabel('s')
-    ylabel('Filtre passe-haut échantilloné')
+    ylabel('Amplitude')
 
     FourrierImp=abs(fftshift(fft(ifftshift(Impulsion))));
     subplot(2,2,2)
@@ -30,6 +30,15 @@ if Affichage
     xlabel('Hz')
     ylabel('Module TFD')
 
+
+    subplot(2,1,1);
+    subplot(2,1,1);
+    plage_bas=(0:T*5/(length(signal_filtre_bas)-1):T*5);
+    plot(plage_bas,signal_filtre_bas)
+    title('Signal filtré par passe-bas')
+    xlabel('Temps (s)')
+    ylabel('Amplitude')
+    
 end
 
 end
