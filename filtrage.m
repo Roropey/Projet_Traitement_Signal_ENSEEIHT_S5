@@ -1,13 +1,21 @@
-function signal_filtre = filtrage(signal,ordre_de_filtrage,fc,Fe,T,Bande,Affichage)
+function signal_filtre = filtrage(signal,ordre_de_filtrage,fc,Fe,Bande,Affichage)
 plage=(-(ordre_de_filtrage-1)/2:(ordre_de_filtrage-1)/2)*(1/Fe);
 if Bande == "bas"
     Impulsion=2*fc*sinc(2*fc*plage)/Fe;
 elseif Bande == "haut"
-    Impulsion=(dirac(plage)==Inf)-2*fc*sinc(2*fc*plage)/Fe;
+    Impulsion=-2*fc*sinc(2*fc*plage)/Fe;
+    Impulsion(((ordre_de_filtrage-1)/2)+1)=Impulsion(((ordre_de_filtrage-1)/2)+1)+1;
 else
     error('Choix filtrage non supporté, choississez soit "bas" soit "haut"');
 end
-signal_filtre=filter(Impulsion,[1],signal);
+
+signal_decale=[signal;zeros(((ordre_de_filtrage-1)/2),1)]; 
+%{entre le dirac à 0 (ce qui nous intéresse) et le début de la réponse
+%impulsionnelle, il se déroule un délais dont le nombre
+
+signal_decale_filtre=filter(Impulsion,[1],signal_decale);
+signal_filtre=signal_decale_filtre(((ordre_de_filtrage-1)/2)+1:end);
+
 
 if Affichage
     figure('Name',strcat("Impulsion du filtre passe-",Bande," et signal filtré"));
@@ -38,8 +46,8 @@ if Affichage
     ylabel('Module TFD');
 
     subplot(3,2,[5 6]);    
-    plage_bas=(0:T*5/(length(signal_filtre)-1):T*5);
-    plot(plage_bas,signal_filtre)
+    plage_filtre=(0:(length(signal_filtre)-1))/Fe;
+    plot(plage_filtre,signal_filtre)
     title(strcat("Signal filtré par passe-",Bande));
     xlabel('Temps (s)');
     ylabel('Amplitude');

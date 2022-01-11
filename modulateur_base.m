@@ -1,4 +1,4 @@
-function signal_m = modulateur_signal_base(bits_utilisateur,Fe,T)
+function [signal_m , Ts] = modulateur_signal_base(bits_utilisateur,Fe,T)
 Ts=T/length(bits_utilisateur);
 Ns=floor(Ts/(1/Fe));
 signal_m=bits_utilisateur(1,:).*2-1;

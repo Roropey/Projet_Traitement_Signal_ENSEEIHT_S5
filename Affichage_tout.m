@@ -4,20 +4,47 @@ close all;
 %Variables données
 T=40*(10^-3);
 f1=0;
+Slot1=2;
 f2=46000;
+Slot2=5;
 Fe=120000;
+Slot_tot=5;
+Bruit=100;
+
+%Variable pour afficher ou non les courbes (true => afficher)
+Affichage=true;
+
+%Lecture des messages des utilisateurs
+load('donnees1.mat');
+load('donnees2.mat');
 
 %Variables déduites
-ordre_filtre=101;
-fc_bas=20000;
-fc_haut=36000;
+ordre_filtre=201;
+fc=23000;
 
 %Création signal MF-TDMA
-signal_recu=Signal_transmit(f1,f2,Fe,T,2,5,5,100,true);
+[signal_recu,Ts]=Signal_transmit(bits_utilisateur1,f1,bits_utilisateur2,f2,Fe,T,Slot1,Slot2,Slot_tot,Bruit,Affichage);
 
 %Filtrage signal reçu
-signal_filtre_bas=filtrage(signal_recu,ordre_filtre,fc_bas,Fe,T,"bas",true);
-signal_filtre_haut=filtrage(signal_recu,ordre_filtre,fc_haut,Fe,T,"haut",true);
+signal_filtre_bas=filtrage(signal_recu,ordre_filtre,fc,Fe,"bas",Affichage);
+signal_filtre_haut=filtrage(signal_recu,ordre_filtre,fc,Fe,"haut",Affichage);
 
-signal_bande_base_bas = retour_bande_base(signal_filtre_bas,ordre_filtre,f1,Fe,T);
-signal_bande_base_haut = retour_bande_base(signal_filtre_haut,ordre_filtre,f2,Fe,T);
+%Remise des différents signaux sur leur bande de base
+signal_bande_base_bas = retour_bande_base(signal_filtre_bas,ordre_filtre,f1,Fe,Affichage);
+signal_bande_base_haut = retour_bande_base(signal_filtre_haut,ordre_filtre,f2,Fe,Affichage);
+
+%Extraction des slots utiles des signaux
+slot_bas = Detection_slot_utile(signal_bande_base_bas,T,Fe);
+slot_haut = Detection_slot_utile(signal_bande_base_haut,T,Fe);
+
+%Récuparation des bits des messages
+bits_recup_utilisateur1 = demodulateur_bande_base(slot_bas,T,Fe,Ts);
+bits_recup_utilisateur2 = demodulateur_bande_base(slot_haut,T,Fe,Ts);
+
+%Affichage des messages
+disp("Le message de l'utilisateur 1 est :");
+message_1 = bin2str(bits_recup_utilisateur1);
+disp(message_1);
+disp("Le message de l'utilisateur 2 est :");
+message_2 = bin2str(bits_recup_utilisateur2);
+disp(message_2);
