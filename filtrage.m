@@ -28,18 +28,17 @@ if Affichage
 
     FourrierImp=abs(fftshift(fft(ifftshift(Impulsion))));
     subplot(3,2,2);
-    plot(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp))
+    semilogy(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp))
     title(strcat("Impulsion fréquentielle ",Bande));
     xlabel('Hz');
     ylabel('Module TFD');
 
     subplot(3,2,[3,4]);
-    plot(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp))
+    semilogy(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp))
     hold on;
-    module_signal=abs(fftshift(fft(signal)));
+    module_signal=abs(fft(xcorr(signal,'unbiased')));
     plage_module=(-Fe/2:Fe/(length(module_signal)-1):Fe/2);
-    facteur=max(FourrierImp)/max(module_signal);
-    plot(plage_module,module_signal*facteur)
+    semilogy(plage_module,fftshift(module_signal))
     hold off;
     title(strcat("Module signal et impulsion ",Bande));
     xlabel('Hz');

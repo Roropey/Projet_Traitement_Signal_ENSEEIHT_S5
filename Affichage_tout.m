@@ -22,11 +22,13 @@ load('donnees2.mat');
 ordre_filtre=201;
 fc=23000;
 
-%Création signal MF-TDMA
+%Création signal MF-TDMA : Partie 3.2
 [signal_recu,Ts]=Signal_transmit(bits_utilisateur1,f1,bits_utilisateur2,f2,Fe,T,Slot1,Slot2,Slot_tot,Bruit,Affichage);
 
-%Filtrage signal reçu
+%Filtrage signal reçu : Partie 4.1
+    %Filtrage passe-bas : Partie 4.1.1
 signal_filtre_bas=filtrage(signal_recu,ordre_filtre,fc,Fe,"bas",Affichage);
+    %Filtrage passe-haut : Partie 4.1.2
 signal_filtre_haut=filtrage(signal_recu,ordre_filtre,fc,Fe,"haut",Affichage);
 
 %Remise des différents signaux sur leur bande de base
