@@ -1,4 +1,5 @@
 function signal_filtre = filtrage(signal,ordre_de_filtrage,fc,Fe,Bande,Affichage)
+
 plage=(-(ordre_de_filtrage-1)/2:(ordre_de_filtrage-1)/2)*(1/Fe);
 if Bande == "bas"
     Impulsion=2*fc*sinc(2*fc*plage)/Fe;
@@ -21,32 +22,33 @@ if Affichage
     figure('Name',strcat("Impulsion du filtre passe-",Bande," et signal filtré"));
     
     subplot(3,2,1);
-    plot(plage,Impulsion)
+    plot(plage,Impulsion,'r')
     title(strcat("Impulsion temporelle ",Bande));
     xlabel('s');
     ylabel('Amplitude');
 
     FourrierImp=abs(fftshift(fft(ifftshift(Impulsion))));
     subplot(3,2,2);
-    semilogy(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp))
+    semilogy(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp),'r')
     title(strcat("Impulsion fréquentielle ",Bande));
     xlabel('Hz');
     ylabel('Module TFD');
 
     subplot(3,2,[3,4]);
-    semilogy(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp))
-    hold on;
     module_signal=abs(fft(xcorr(signal,'unbiased')));
     plage_module=(-Fe/2:Fe/(length(module_signal)-1):Fe/2);
-    semilogy(plage_module,fftshift(module_signal))
+    s1 = semilogy(plage_module,fftshift(module_signal),'b')
+    hold on;   
+    s2 = semilogy(plage*Fe*Fe/ordre_de_filtrage,(FourrierImp),'r','Linewidth',1.5)
     hold off;
     title(strcat("Module signal et impulsion ",Bande));
+    legend([s1, s2],"Module du signal","Module de l'impulsion")
     xlabel('Hz');
     ylabel('Module TFD');
 
     subplot(3,2,[5 6]);    
     plage_filtre=(0:(length(signal_filtre)-1))/Fe;
-    plot(plage_filtre,signal_filtre)
+    plot(plage_filtre,signal_filtre,'b')
     title(strcat("Signal filtré par passe-",Bande));
     xlabel('Temps (s)');
     ylabel('Amplitude');

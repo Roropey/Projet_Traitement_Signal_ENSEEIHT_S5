@@ -15,8 +15,8 @@ signal_avant_bruit=cos(2*pi*f1*(0:(length(signal_1)-1))/Fe)'.*signal_1+cos(2*pi*
 signal_bruit=randn(length(signal_avant_bruit),1)*sqrt(10^(-bruit/10));
 signal_MFTDMA=signal_bruit+signal_avant_bruit;
 
+
 if Affichage
-      
 
     %Affichage m1 et m2 et leurs densités spéctrales de puissance
     figure('Name','Modulation bande base');
