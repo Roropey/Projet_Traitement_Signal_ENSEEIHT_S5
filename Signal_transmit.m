@@ -11,12 +11,9 @@ signal_2=creation_signal_slots(signal_m2,slot_2,nb_slots,Fe,T);
 signal_avant_bruit=cos(2*pi*f1*(0:(length(signal_1)-1))/Fe)'.*signal_1+cos(2*pi*f2*(0:(length(signal_2)-1))/Fe)'.*signal_2;
 
 signal_bruit=randn(length(signal_avant_bruit),1)*sqrt(10^(-bruit/10));
-signal_MFTDMA=signal_bruit+signal_avant_bruit;      %awgn(signal_avant_bruit,bruit,'measured');
+signal_MFTDMA=signal_bruit+signal_avant_bruit;
 
-%signal_MFTDMA=awgn(signal_avant_bruit,bruit,'measured');
-
-if Affichage
-      
+if Affichage 
 
     %Affichage m1 et m2 et leurs densités spéctrales de puissance
     figure('Name','Modulation bande base');
