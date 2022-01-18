@@ -1,5 +1,5 @@
 function signal_filtre = filtrage(signal,ordre_de_filtrage,fc,Fe,Bande,Affichage)
-
+%% Détermination de l'impulsion de filtrage en fontion des entrées de la fonction
 plage=(-(ordre_de_filtrage-1)/2:(ordre_de_filtrage-1)/2)*(1/Fe);
 if Bande == "bas"
     Impulsion=2*fc*sinc(2*fc*plage)/Fe;
@@ -9,15 +9,19 @@ elseif Bande == "haut"
 else
     error('Choix filtrage non supporté, choississez soit "bas" soit "haut"');
 end
-
+%% Filtrage
+%Décalage pour prendre en compte le délais
 signal_decale=[signal;zeros(((ordre_de_filtrage-1)/2),1)]; 
 %{entre le dirac à 0 (ce qui nous intéresse) et le début de la réponse
-%impulsionnelle, il se déroule un délais dont le nombre
+%impulsionnelle, il se déroule un délais
 
+%Filtrage réel
 signal_decale_filtre=filter(Impulsion,[1],signal_decale);
+
+%Inversion du décalage après filtrage
 signal_filtre=signal_decale_filtre(((ordre_de_filtrage-1)/2)+1:end);
 
-
+%% Affichages des résultats trouvés
 if Affichage
     figure('Name',strcat("Impulsion du filtre passe-",Bande," et signal filtré"));
     

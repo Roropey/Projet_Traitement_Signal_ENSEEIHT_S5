@@ -1,21 +1,21 @@
 function [signal_MFTDMA,Ts] = Signal_transmit (bits_utilisateur1,f1,bits_utilisateur2,f2,Fe,T,slot_1,slot_2,nb_slots,bruit,Affichage)
 
-%Création des signaux m1 et m2 : Partie 3.2.1
+%% Création des signaux m1 et m2 : Partie 3.2.1
 [signal_m1,Ts1]=modulateur_base(bits_utilisateur1,Fe,T);
 [signal_m2,Ts2]=modulateur_base(bits_utilisateur2,Fe,T);
 
 Ts=min(Ts1,Ts2);
 
-%Placement des signaux sur les slots et mise en place sur fréquences porteuses : Partie 3.2.2.1
+%% Placement des signaux sur les slots et mise en place sur fréquences porteuses : Partie 3.2.2.1
 signal_1=creation_signal_slots(signal_m1,slot_1,nb_slots,Fe,T);
 signal_2=creation_signal_slots(signal_m2,slot_2,nb_slots,Fe,T);
 signal_avant_bruit=cos(2*pi*f1*(0:(length(signal_1)-1))/Fe)'.*signal_1+cos(2*pi*f2*(0:(length(signal_2)-1))/Fe)'.*signal_2;
 
-%Génération du bruit et ajout au signal pour obtenir le signal MF-TDMA
+%% Génération du bruit et ajout au signal pour obtenir le signal MF-TDMA
 signal_bruit=randn(length(signal_avant_bruit),1)*sqrt(10^(-bruit/10));
 signal_MFTDMA=signal_bruit+signal_avant_bruit;
 
-
+%% Affichage des résultats
 if Affichage
 
     %Affichage m1 et m2 et leurs densités spéctrales de puissance
