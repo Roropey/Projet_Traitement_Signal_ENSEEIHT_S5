@@ -1,10 +1,8 @@
-function [signal_MFTDMA,Ts] = Signal_transmit (bits_utilisateur1,f1,bits_utilisateur2,f2,Fe,T,slot_1,slot_2,nb_slots,bruit,Affichage)
+function [signal_MFTDMA,Ts1,Ts2] = Signal_transmit (bits_utilisateur1,f1,slot_1,bits_utilisateur2,f2,slot_2,T,Fe,nb_slots,bruit,Affichage)
 
 %% Création des signaux m1 et m2 : Partie 3.2.1
 [signal_m1,Ts1]=modulateur_base(bits_utilisateur1,Fe,T);
 [signal_m2,Ts2]=modulateur_base(bits_utilisateur2,Fe,T);
-
-Ts=min(Ts1,Ts2);
 
 %% Placement des signaux sur les slots et mise en place sur fréquences porteuses : Partie 3.2.2.1
 signal_1=creation_signal_slots(signal_m1,slot_1,nb_slots,Fe,T);
